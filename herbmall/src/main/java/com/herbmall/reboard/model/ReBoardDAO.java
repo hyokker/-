@@ -43,7 +43,7 @@ public class ReBoardDAO {
 
 			//4
 			int cnt=ps.executeUpdate();
-			System.out.println("글등록 결과 cnt="+cnt+", 매개변수 vo="+vo);
+			System.out.println("글등록 결과는 cnt="+cnt+", 매개변수 vo="+vo);
 
 			return cnt;
 		}finally {

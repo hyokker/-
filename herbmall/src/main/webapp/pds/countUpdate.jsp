@@ -12,11 +12,11 @@
 <%	
 	//list.jsp에서 제목 클릭하면 get방식으로 이동
 	//=> http://localhost:9090/herbmall/reBoard/countUpdate.jsp?no=6
-	//1
+	//1d
 	String no=request.getParameter("no");
 	if(no==null || no.isEmpty()){%>
 		<script type="text/javascript">
-			alert('잘못된 url입니다.');
+			alert('잘못된 url입니다.확인하세요');
 			location.href="list.jsp";
 		</script>
 	
