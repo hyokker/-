@@ -1,3 +1,5 @@
+<%@page import="com.herbmall.common.Utility"%>
+<%@page import="java.io.File"%>
 <%@page import="com.herbmall.reboard.model.ReBoardVO"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="com.herbmall.reboard.model.ReBoardDAO"%>
@@ -18,6 +20,7 @@
 	String pwd = request.getParameter("pwd");
 	String groupNo= request.getParameter("groupNo");
 	String step= request.getParameter("step");
+	String fileName= request.getParameter("fileName");
 	//2
 	ReBoardDAO dao = new ReBoardDAO();
 	ReBoardVO vo = new ReBoardVO();
@@ -30,6 +33,21 @@
 		if(dao.checkPwd(Integer.parseInt(no), pwd)){
 		//[2] 삭제
 		dao.deleteReBoard(vo);
+		String upDir=Utility.UPLOAD_PATH; //업로드할 폴더
+	    String saveDir=application.getRealPath(upDir);
+	    saveDir=config.getServletContext().getRealPath(upDir);
+	    System.out.println("saveDir="+saveDir);
+	      
+	    saveDir=Utility.TEST_PATH;
+		
+		if(fileName!=null&&!fileName.isEmpty()){
+			File f = new File(saveDir,fileName);
+			if(f.exists()){
+				boolean bool=f.delete();
+				System.out.println("기존 된 파일 삭제 :" + bool);
+			}
+		}
+		/* dao.deleteBoard(Integer.parseInt(no), fileName); */
 		%>
 		<script type="text/javascript">
 			alert("삭제 성공");

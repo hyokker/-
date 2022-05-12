@@ -91,7 +91,7 @@
 		</div>
 		<div class="center">
 			<a href='edit.jsp?no=<%=no%>'>수정</a> |
-        	<a href='delete.jsp?no=<%=no%>&groupNo=<%=vo.getGroupNo()%>&step=<%=vo.getStep()%>'>삭제</a> |
+        	<a href='delete.jsp?no=<%=no%>&groupNo=<%=vo.getGroupNo()%>&step=<%=vo.getStep()%>&fileName=<%=vo.getFileName()%>'>삭제</a> |
         	<a href='write.jsp?no=<%=no%>'>답변</a> |
         	<a href='list.jsp'>목록</a>			
 		</div>

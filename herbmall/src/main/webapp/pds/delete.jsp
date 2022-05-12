@@ -76,12 +76,14 @@
 <%
 	String groupNo=request.getParameter("groupNo");
 	String step=request.getParameter("step");
+	String fileName=request.getParameter("fileName");
 
 %>
 	<!-- 삭제 처리시 필요한 no를 hidden 필드에 넣어준다 --> 
 	<input type="text" name="no" value="<%=no %>" />
 	<input type="text" name="groupNo" value="<%=groupNo %>" />
 	<input type="text" name="step" value="<%=step %>" />
+	<input type="hiddin" name="fileName" value="<%=fileName %>" />
 	
 		<fieldset>
 		<legend>글 삭제</legend>

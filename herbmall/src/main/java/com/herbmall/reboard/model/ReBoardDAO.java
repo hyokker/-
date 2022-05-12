@@ -362,6 +362,23 @@ public class ReBoardDAO {
 			pool.dbClose(ps, con);
 		}
 	}
+	
+	/*
+	 * public void deleteBoard(int no, String fileName) throws SQLException {
+	 * Connection con=null; PreparedStatement ps=null;
+	 * 
+	 * try { con=pool.getConnection();
+	 * 
+	 * String sql="delete from reBoard where no=? and fileName=?";
+	 * ps=con.prepareStatement(sql);
+	 * 
+	 * ps.setInt(1, no); ps.setString(2, fileName);
+	 * 
+	 * int cnt=ps.executeUpdate();
+	 * 
+	 * System.out.println("삭제 결과 cnt="+cnt+", 매개변수 no="+no+", fileName="+fileName);
+	 * }finally { pool.dbClose(ps, con); } }
+	 */
 }
 
 
