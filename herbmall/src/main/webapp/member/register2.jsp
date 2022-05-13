@@ -17,7 +17,7 @@
 </style>
 <article>
 <div class="divForm">
-<form name="frm1" method="post" action="register_ok.jsp">
+<form name="frm1" method="post" action="register2_ok.jsp">
 <fieldset>
 	<legend>회원 가입</legend>
     <div>        
