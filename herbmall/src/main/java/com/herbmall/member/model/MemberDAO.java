@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 
@@ -79,7 +80,77 @@ public class MemberDAO {
 		}finally {
 			pool.dbClose(rs, ps, con);
 		}
+	}
+	
+	public int checklogin(String userid, String pwd) throws SQLException {
+		Connection con=null;
+		PreparedStatement ps=null;
+		ResultSet rs=null;
 		
+		int result=0;
+		try {
+			con=pool.getConnection();
+			String sql="select pwd from member where userid=? and outdate is null";
+			ps=con.prepareStatement(sql);
+			
+			ps.setString(1, userid);
+			
+			
+			//4
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				String dbPwd=rs.getString(1);
+				
+				if(dbPwd.equals(pwd)) {
+					result=MemberService.LOGIN_OK;
+				}else{
+					result=MemberService.DISAGREE_PWD;
+				}
+			}else{
+				result=MemberService.NONDE_USERID;
+			}
+			System.out.println("로그인 체크 결과 result="+result
+					+", 매개변수 userid="+userid+", pwd="+pwd);
+			return result;
+		}finally {
+			pool.dbClose(rs, ps, con);
+		}
+	}
+	
+	public MemberVO selectByUserid(String userid) throws SQLException {
+		Connection con=null;
+		PreparedStatement ps=null;
+		ResultSet rs =null;
 		
+		MemberVO vo = null;
+		try {
+			con=pool.getConnection();
+			
+			String sql="select * from member where userid=?";
+			ps=con.prepareStatement(sql);
+			ps.setString(1, userid);
+			
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				 int no = rs.getInt("no");
+		         userid=rs.getString("userid");
+		         String name = rs.getString("name");
+		         String pwd = rs.getString("pwd");
+		         String email = rs.getString("email");
+		         String hp = rs.getString("hp");
+		         String zipcode = rs.getString("zipcode");
+		         String address = rs.getString("address");
+		         String addressDetail = rs.getString("addressDetail");
+		         Timestamp regdate = rs.getTimestamp("regdate");
+		         int mileage = rs.getInt("mileage");
+		         Timestamp outdate = rs.getTimestamp("outdate");
+		         
+		         vo=new MemberVO(no, userid, name, pwd, email, hp, zipcode, address, addressDetail, regdate, mileage, outdate);
+			}
+			System.out.println("아이디로 조회결과 vo="+vo+"매개변수 userid="+userid);
+				return vo;
+		}finally {
+			pool.dbClose(rs, ps, con);
+		}
 	}
 }

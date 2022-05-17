@@ -20,7 +20,10 @@
 	String userid = request.getParameter("userid");
 	String pwd = request.getParameter("pwd");
 	String email = request.getParameter("email");
-	String hp = request.getParameter("hp");
+	String hp1 = request.getParameter("hp1");
+	String hp2 = request.getParameter("hp2");
+	String hp3 = request.getParameter("hp3");
+	String hp = hp1+"-"+hp2+"-"+hp3;
 	String zipcode = request.getParameter("zipcode");
 	String address = request.getParameter("address");
 	String addressDetail = request.getParameter("addressDetail");

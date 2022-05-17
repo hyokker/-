@@ -1,7 +1,38 @@
+<%@page import="com.herbmall.member.model.MemberVO"%>
+<%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../inc/top.jsp" %>
+<jsp:useBean id="memberService" class="com.herbmall.member.model.MemberService" scope="session"></jsp:useBean>
+<%
+	String userid=(String)session.getAttribute("userid");
+	MemberVO vo = null;
 
+	try{
+		vo=memberService.selectByUserid(userid);
+	}catch(SQLException e){
+		e.printStackTrace();
+	}
+	String zipcode=vo.getZipcode();
+	String address=vo.getAddress();
+	String addressDetail=vo.getAddressDetail();
+	if(zipcode==null) zipcode="";
+	if(address==null) address="";
+	if(addressDetail==null) addressDetail="";
+	
+	//hp 010-100-2000, ""
+	String hp1="";
+	String hp2="";
+	String hp3="";
+	String hp=vo.getHp();
+	if(hp!=null && !hp.isEmpty()){
+		String[] hpArr=hp.split("-");
+		hp1=hpArr[0];
+		hp2=hpArr[1];
+		hp3=hpArr[2];
+	}
+	
+%>
 <script type="text/javascript">
 	/*필수 아이디 이름 패스워드 (유효성검사)  */
 	$(function(){
@@ -88,18 +119,16 @@ function validate_tel(tel){
 </style>
 <article>
 <div class="divForm">
-<form name="frm1" method="post" action="register_ok.jsp">
+<form name="frm1" method="post" action="memberEdit_ok.jsp">
 <fieldset>
-	<legend>회원 가입</legend>
+	<legend>회원 정보 수정</legend>
     <div>        
-        <label for="name">성명</label>
-        <input type="text" name="name" id="name" style="ime-mode:active">
+        <span class="sp1">성명</span>
+        <span><%=vo.getName() %></span>
     </div>
     <div>
-        <label for="userid">회원ID</label>
-        <input type="text" name="userid" id="userid"
-        		style="ime-mode:inactive">&nbsp;
-        <input type="button" value="중복확인" id="btnChkId" title="새창열림">
+        <span class="sp1">회원ID</span>
+        <span><%=vo.getUserid() %></span>
     </div>
     <div>
         <label for="pwd">비밀번호</label>
@@ -112,12 +141,12 @@ function validate_tel(tel){
     <div>
         <label for="zipcode">주소</label>
         <input type="text" name="zipcode" id="zipcode" ReadOnly  
-        	title="우편번호" class="width_80">
+        	title="우편번호" class="width_80" value="<%=zipcode%>">
         <input type="Button" value="우편번호 찾기" id="btnZipcode" title="새창열림"><br />
         <span class="sp1">&nbsp;</span>
-        <input type="text" name="address" ReadOnly title="주소"  class="width_350"><br />
+        <input type="text" name="address" ReadOnly title="주소"  class="width_350" value="<%=address%>"><br />
         <span class="sp1">&nbsp;</span>
-        <input type="text" name="addressDetail" title="상세주소"  class="width_350">
+        <input type="text" name="addressDetail" title="상세주소"  class="width_350" value="<%=addressDetail%>">
     </div>
     <div>
         <label for="hp1">핸드폰</label>&nbsp;<select name="hp1" id="hp1" title="휴대폰 앞자리">
@@ -130,9 +159,9 @@ function validate_tel(tel){
        	</select>
         -
         <input type="text" name="hp2" id="hp2" maxlength="4" title="휴대폰 가운데자리"
-        	class="width_80">-
+        	class="width_80" value="<%=hp2 %>">-
         <input type="text" name="hp3" id="hp3" maxlength="4" title="휴대폰 뒷자리"
-        	class="width_80">
+        	class="width_80" value="<%=hp3 %>">
     </div>
     <div>
         <label for="email1">이메일 주소</label>
@@ -146,13 +175,12 @@ function validate_tel(tel){
         </select>
         <input type="text" name="email3" id="email3" title="직접입력인 경우 이메일주소 뒷자리"
         	style="visibility:hidden">
-    </div>
-    <div class="center">
-         <input type="submit" id="wr_submit" value="회원가입">
-    </div>
-</fieldset>
+    	</div>
+    	<div class="center">
+        	 <input type="submit" id="wr_submit" value="회원수정">
+    	</div>
+	</fieldset>
 
-    <input type ="text" name="chkId" id="chkId">
         
 </form>
 </div>

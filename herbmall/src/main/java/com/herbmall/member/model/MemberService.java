@@ -12,6 +12,11 @@ public class MemberService {
    public static final int USABLE_ID=1; //사용가능한 아이디
    public static final int UNUSABLE_ID=2; //이미 존재해서 사용불가능한 아이디
    
+   //로그인 체크에서 사용하는 상수
+   public static final int LOGIN_OK=1; //로그인 성공
+   public static final int DISAGREE_PWD=2; //비밀번호 불일치
+   public static final int NONDE_USERID=3; //해당 아이디 존재 하지 않음
+   
    private MemberDAO memberDao;
    
    public MemberService() {
@@ -28,5 +33,13 @@ public class MemberService {
    public int duplicateId(String userid) throws SQLException {
       return memberDao.duplicateId(userid);
       
+   }
+   public int checklogin(String userid, String pwd) throws SQLException {
+	   return memberDao.checklogin(userid, pwd);
+	   
+   }
+   
+   public MemberVO selectByUserid(String userid) throws SQLException {
+	   return memberDao.selectByUserid(userid);
    }
 }
