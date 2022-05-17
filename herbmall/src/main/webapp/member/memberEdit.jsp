@@ -3,6 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../inc/top.jsp" %>
+<%@ include file="../login/loginCheck.jsp" %>
+
+
 <jsp:useBean id="memberService" class="com.herbmall.member.model.MemberService" scope="session"></jsp:useBean>
 <%
 	String userid=(String)session.getAttribute("userid");
@@ -32,20 +35,38 @@
 		hp3=hpArr[2];
 	}
 	
+	String[] emailList ={"naver.com","hanmail.net","nate.com","gmail.com"};
+	//h@nate.com, k@herb.com,""
+	
+	boolean isEtc=false;
+	int count=0;
+	String email=vo.getEmail();
+	String email1="";
+	String email2="";
+	if(email!=null && !email.isEmpty()){
+		String[] eArr=email.split("@");
+		email1=eArr[0]; //h
+		email2=eArr[1]; //nate.com
+		
+		for(int i=0;i<emailList.length;i++){
+			if(email2.equals(emailList[i])){
+					count++;
+					break;
+			}
+		}
+		if(count==0){
+			isEtc=true;
+		}
+	}
+	
 %>
+<script type="text/javascript" src="../js/member.js"></script>
 <script type="text/javascript">
 	/*필수 아이디 이름 패스워드 (유효성검사)  */
 	$(function(){
 		$('#wr_submit').click(function(){
-			if($.trim($('#name').val())==""){	
-				alert('이름을 입력하세요');
-				$('#name').focus();
-				return false;
-			}else if(!validate_userid($('#userid').val())){
-				alert('아이디는 영문, 숫자, _(밑줄)만 가능합니다');
-				$('#userid').focus();
-				return false;
-			}else if($('#pwd').val().length<1){
+			
+			if($('#pwd').val().length<1){
 				alert('비밀번호를 입력하세요');
 				$('#pwd').focus();
 				return false;
@@ -58,55 +79,11 @@
 				alert("전화번호는 숫자만 가능합니다");
 				$("#hp2").focus();
 				event.preventDefault();
-			}else if($('#chkId').val()!='Y'){
-				alert("아이디 중복확인 해야 합니다");
-				$("#btnChkId").focus();
-				event.preventDefault();	
 			}
-	
 		});
-		
-		$('#btnChkId').click(function(){
-			var id=$('#userid').val();
-			window.open("checkUserid.jsp?userid="+id,"checkUserid",
-					"width=500,height=500,location=yes, resizable=yes,top=100,left=50");
-		});
-		
-		$('#btnZipcode').click(function(){
-			
-			window.open("../zipcode/zipcode.jsp","zipcode","width=500, height=500, location=yes,resizable=yes");
-		});
-		
-		$('#email2').change(function(){
-	         if($('#email2').val()=="etc"){
-	            $('#email3').css('visibility','visible');
-	            $('#email3').focus();
-	         }else{
-	            $('#email3').css('visibility','hidden');
-	            
-	         }
-	   
-	      });
 	});
 	
-function validate_userid(id){
-	var pattern = new RegExp(/^[a-zA-Z0-9_]+$/g);
-	return pattern.test(id);
-	/*
-	정규식 /^[a-zA-Z0-9_]+$/g
-	a에서 z 사이의 문자, A~Z사이의 문자, 0 에서 9사이의 숫자나 _로 시작하거나 끝아야 한다는 의미
-	닫기 대괄호(])뒤의 + 기호는 이 패턴이 한 번 또는 그이상 반복된다는 의미
-	*/
-}
-function validate_tel(tel){
-	var pattern = new RegExp(/^[0-9]*$/g);
-	return pattern.test(tel);//정규식과 일치하면 true
-	/*
-	정규식 /^[0-9]*$/g
-	0에서 9사이의 숫자로 시작하거나 끝나야 한다는 의미(^는 시작,$는 끝을 의미)
-	닫기 대괄호(])뒤의 * 기호는 0번 이상 반복
-	*/
-}
+
 </script>
 
 <style type="text/css">
@@ -150,12 +127,36 @@ function validate_tel(tel){
     </div>
     <div>
         <label for="hp1">핸드폰</label>&nbsp;<select name="hp1" id="hp1" title="휴대폰 앞자리">
-            <option value="010">010</option>
-            <option value="011">011</option>
-            <option value="016">016</option>
-            <option value="017">017</option>
-            <option value="018">018</option>
-            <option value="019">019</option>
+            <option value="010"
+            	<%if(hp1.equals("010")){ %>
+            		selected="selected"
+            	<%} %>
+            >010</option>
+            <option value="011"
+            <%if(hp1.equals("011")){ %>
+            		selected="selected"
+            	<%} %>
+            >011</option>
+            <option value="016"
+            <%if(hp1.equals("016")){ %>
+            		selected="selected"
+            	<%} %>
+            >016</option>
+            <option value="017"
+            <%if(hp1.equals("017")){ %>
+            		selected="selected"
+            	<%} %>
+            >017</option>
+            <option value="018"
+            <%if(hp1.equals("018")){ %>
+            		selected="selected"
+            	<%} %>
+            >018</option>
+            <option value="019"
+            <%if(hp1.equals("019")){ %>
+            		selected="selected"
+            	<%} %>
+            >019</option>
        	</select>
         -
         <input type="text" name="hp2" id="hp2" maxlength="4" title="휴대폰 가운데자리"
@@ -165,16 +166,42 @@ function validate_tel(tel){
     </div>
     <div>
         <label for="email1">이메일 주소</label>
-        <input type="text" name="email1"  id="email1" title="이메일주소 앞자리">@
+        <input type="text" name="email1"  id="email1" title="이메일주소 앞자리" value="<%=email1%>">@
         <select name="email2" id="email2"  title="이메일주소 뒷자리">
-            <option value="naver.com">naver.com</option>
-            <option value="hanmail.net">hanmail.net</option>
-            <option value="nate.com">nate.com</option>
-            <option value="gmail.com">gmail.com</option>
-            <option value="etc">직접입력</option>
+            <option value="naver.com" 
+            <%if(email2.equals("naver.com")){%>
+            	selected="selected"
+            <%}%>
+            >naver.com</option>
+            <option value="hanmail.net"
+             <%if(email2.equals("hanmail.net")){%>
+            	selected="selected"
+            <%}%>
+            >hanmail.net</option>
+            <option value="nate.com"
+             <%if(email2.equals("nate.com")){%>
+            	selected="selected"
+            <%}%>
+            >nate.com</option>
+            <option value="gmail.com"
+             <%if(email2.equals("gmail.com")){%>
+            	selected="selected"
+            <%}%>
+            >gmail.com</option>
+            <option value="etc"
+             <%if(isEtc){%>
+            	selected="selected"
+            <%}%>
+            >직접입력</option>
         </select>
-        <input type="text" name="email3" id="email3" title="직접입력인 경우 이메일주소 뒷자리"
-        	style="visibility:hidden">
+        <input type="text" name="email3" id="email3"
+        	title="직접입력인 경우 이메일주소 뒷자리"
+        	<%if(isEtc){ %>
+        		style="visibility: visible;"
+        		value="<%=email2%>"
+	        	<%}else{ %>
+	        	style="visibility:hidden">
+	        	<%} %>
     	</div>
     	<div class="center">
         	 <input type="submit" id="wr_submit" value="회원수정">

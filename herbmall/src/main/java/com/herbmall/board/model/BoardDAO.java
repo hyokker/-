@@ -216,4 +216,54 @@ public class BoardDAO {
          pool.dbClose(ps, con);
       }
    }
+   
+   public List<BoardVO> selectMainNotice() throws SQLException {
+	   /*
+			select rownum,title,regdate from
+			(
+				select * from
+				board
+				order by regdate desc
+			)
+			where rownum<=6; 
+	    */
+	   
+	   Connection con = null;
+	   PreparedStatement ps =null;
+	   ResultSet rs=null;
+	   
+	   List<BoardVO> list=new ArrayList<BoardVO>();
+	   try{
+		   con=pool.getConnection();
+		   
+		   
+		   String sql="select * from\r\n"
+		   		+ "(\r\n"
+		   		+ "    select * from\r\n"
+		   		+ "    board\r\n"
+		   		+ "    order by no desc\r\n"
+		   		+ ")\r\n"
+		   		+ "where rownum<=6";
+		   ps=con.prepareStatement(sql);
+		   
+		   rs=ps.executeQuery();
+		   while(rs.next()) {
+			    int no=rs.getInt("no");
+			    int readcount=rs.getInt("readcount");
+			    String name=rs.getString("name");
+			 	String pwd=rs.getString("pwd");
+			 	String title=rs.getString("title");
+			 	String email=rs.getString("email");
+			 	String content=rs.getString("content");
+			 	Timestamp regdate=rs.getTimestamp("regdate");
+			 	
+			 	BoardVO vo= new BoardVO(no, name, pwd, title, email, regdate, readcount, content);
+			 	list.add(vo);
+		   }
+		   System.out.println("메인 공지사항 조회 결과 list.size()="+list.size());
+		   return list;
+	   }finally {
+		   pool.dbClose(rs, ps, con);
+	   }
+   }
 }

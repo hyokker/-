@@ -34,12 +34,19 @@ public class MemberService {
       return memberDao.duplicateId(userid);
       
    }
-   public int checklogin(String userid, String pwd) throws SQLException {
-	   return memberDao.checklogin(userid, pwd);
+   public int checkLogin(String userid, String pwd) throws SQLException {
+	   return memberDao.checkLogin(userid, pwd);
 	   
    }
    
    public MemberVO selectByUserid(String userid) throws SQLException {
 	   return memberDao.selectByUserid(userid);
+   }
+   public int updateMember(MemberVO vo) throws SQLException {
+	   return memberDao.updateMember(vo);
+   }
+   
+   public int updateOutdate(String userid, String pwd) throws SQLException {
+	   return memberDao.updateOutdate(userid, pwd);
    }
 }

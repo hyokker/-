@@ -24,7 +24,7 @@
 	String msg="로그인 실패", url="login.jsp";
 			MemberVO vo = null;
 		try{
-			int result=memberservice.checklogin(userid, pwd);
+			int result=memberservice.checkLogin(userid, pwd);
 			//3
 			if(result==MemberService.LOGIN_OK){
 				vo=memberservice.selectByUserid(userid);

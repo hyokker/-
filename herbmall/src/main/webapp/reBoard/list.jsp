@@ -194,24 +194,12 @@
 <div class="divSearch">
    	<form name="frmSearch" method="post" action='list.jsp'>
         <select name="searchCondition">
-            <option value="title" 
-            	<% if("title".equals(condition)){ %>
-            		selected="selected"
-            	<%} %>
-            >제목</option>
-            <option value="content" 
-            	<% if("content".equals(condition)){ %>
-            		selected="selected"
-            	<%} %>
-            >내용</option>
-            <option value="name" 
-            	<% if("name".equals(condition)){ %>
-            		selected="selected"
-            	<%} %>
-            >작성자</option>
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="name">작성자</option>
         </select>   
         <input type="text" name="searchKeyword" title="검색어 입력하세요"
-        	value="<%=keyword%>">   
+        	value="">   
 		<input type="submit" value="검색">
     </form>
 </div>
